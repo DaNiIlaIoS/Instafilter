@@ -7,8 +7,11 @@
 
 import PhotosUI
 import SwiftUI
+import StoreKit
 
 struct ContentView: View {
+    @Environment(\.requestReview) var requestReview
+    
     @State private var pickerItems = [PhotosPickerItem]()
     @State private var selectedImages = [Image]()
     
@@ -20,10 +23,14 @@ struct ContentView: View {
                 PhotosPicker(selection: $pickerItems, maxSelectionCount: 3, matching: .any(of: [.images, .not(.screenshots)])) {
                     Label("Select photos", systemImage: "photo.artframe")
                 }
-                
+                Spacer()
                 ShareLink(item: example, preview: SharePreview("Some image", image: example)) {
-                    Image(systemName: "arrowshape.turn.up.right.fill")
+                    Image(systemName: "arrowshape.turn.up.right")
                 }
+            }
+            
+            Button("Request Review") {
+                requestReview()
             }
             
             ScrollView {
@@ -34,6 +41,7 @@ struct ContentView: View {
                 }
             }
         }
+        .padding(.horizontal, 20)
         .onChange(of: pickerItems) {
             Task {
                 selectedImages.removeAll()
