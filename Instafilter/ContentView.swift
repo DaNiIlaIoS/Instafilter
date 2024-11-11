@@ -13,15 +13,15 @@ struct ContentView: View {
     @State private var selectedImages = [Image]()
     
     var body: some View {
+        let example = selectedImages.first ?? Image(systemName: "photo.artframe")
+        
         VStack {
             HStack {
                 PhotosPicker(selection: $pickerItems, maxSelectionCount: 3, matching: .any(of: [.images, .not(.screenshots)])) {
                     Label("Select photos", systemImage: "photo.artframe")
                 }
                 
-                ShareLink(item: URL(string: "https://www.hackingwithswift.com")!,
-                          subject: Text("Learn Swift Here!"),
-                          message: Text("Check out 100 days of SwiftUI!")) {
+                ShareLink(item: example, preview: SharePreview("Some image", image: example)) {
                     Image(systemName: "arrowshape.turn.up.right.fill")
                 }
             }
